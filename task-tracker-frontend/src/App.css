@@ -1,0 +1,237 @@
+/* General Body and App Container Styles */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Ensure Inter font is used */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Soft gradient background */
+  min-height: 100vh; /* Ensure background covers full height */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+  padding: 20px;
+}
+
+.App {
+  padding: 30px;
+  max-width: 1200px; /* Increased max-width for better desktop view */
+  width: 100%;
+  margin: 20px auto;
+  background-color: #ffffff; /* White background for the main app content */
+  border-radius: 16px; /* More rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Stronger, softer shadow */
+  overflow: hidden; /* Ensures rounded corners clip content */
+}
+
+/* Header Styling */
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.8em; /* Slightly larger heading */
+  font-weight: 800; /* Extra bold */
+  letter-spacing: -0.03em;
+  background: linear-gradient(45deg, #4a90e2, #007bff); /* Blue gradient for title */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 10px;
+  border-bottom: 3px solid rgba(0, 123, 255, 0.2); /* Subtle underline */
+}
+
+/* Section Styling */
+.section {
+  background-color: #fcfcfc; /* Slightly off-white for sections */
+  border: 1px solid #e0e0e0;
+  padding: 30px; /* Increased padding */
+  margin-bottom: 30px;
+  border-radius: 12px; /* Consistent rounded corners */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Softer shadow */
+}
+
+h2 {
+  color: #34495e;
+  margin-bottom: 25px; /* Increased margin */
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 12px;
+  font-size: 2em; /* Larger subsection headings */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Form Elements */
+form label {
+  display: block;
+  margin-bottom: 15px; /* Increased spacing */
+  font-weight: 600;
+  color: #4a4a4a; /* Darker label color */
+  font-size: 0.95em;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="date"],
+form input[type="number"],
+form textarea,
+form select {
+  width: calc(100% - 28px); /* Adjust for padding and border */
+  padding: 14px; /* Increased padding */
+  margin-top: 8px;
+  margin-bottom: 15px; /* Consistent spacing */
+  border: 1px solid #c2d1e2; /* Softer border color */
+  border-radius: 8px; /* More rounded inputs */
+  font-size: 1.05em;
+  color: #333;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="date"]:focus,
+form input[type="number"]:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); /* More prominent focus ring */
+}
+
+form button {
+  background: linear-gradient(45deg, #007bff, #0056b3); /* Blue gradient for primary buttons */
+  color: white;
+  padding: 14px 28px; /* Increased padding */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.15em;
+  font-weight: 700;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.25); /* More prominent button shadow */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+form button:hover {
+  background: linear-gradient(45deg, #0056b3, #004085);
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.35);
+}
+
+form button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+/* List Items */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 20px; /* Increased padding */
+  margin-bottom: 15px; /* Increased spacing */
+  border-radius: 10px; /* Consistent rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+li:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+li strong {
+  color: #0056b3;
+  font-size: 1.3em; /* Larger bold text */
+  display: block;
+  margin-bottom: 8px;
+}
+
+li p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.95em;
+}
+
+/* Message & Error Boxes */
+.message {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(212, 237, 218, 0.5);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(248, 215, 218, 0.5);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Specific Button Overrides (for Tailwind integration) */
+.bg-yellow-500 { background-color: #f39c12; }
+.hover\:bg-yellow-600:hover { background-color: #e67e22; }
+
+.bg-red-500 { background-color: #e74c3c; }
+.hover\:bg-red-600:hover { background-color: #c0392b; }
+
+.bg-green-500 { background-color: #2ecc71; }
+.hover\:bg-green-600:hover { background-color: #27ae60; }
+
+.bg-gray-500 { background-color: #95a5a6; }
+.hover\:bg-gray-600:hover { background-color: #7f8c8d; }
+
+.bg-purple-600 { background-color: #8e44ad; }
+.hover\:bg-purple-700:hover { background-color: #6c3483; }
+
+/* Further refinements for text alignment and spacing within list items */
+li p.text-xs {
+  line-height: 1.4;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .App {
+    padding: 15px;
+    margin: 10px auto;
+  }
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.6em;
+    margin-bottom: 15px;
+  }
+  form button {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+  li {
+    padding: 15px;
+  }
+  li strong {
+    font-size: 1.1em;
+  }
+}

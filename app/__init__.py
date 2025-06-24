@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_cors import CORS # Import CORS
 from app.config import Config
 import os # Import the os module
+from dotenv import load_dotenv
 
 # Global instances
 db = SQLAlchemy()
@@ -18,8 +19,8 @@ def create_app():
     # Explicitly set GOOGLE_CLIENT_ID and JWT_SECRET_KEY from environment variables
     # or use default values if environment variables are not set.
     # IMPORTANT: For production, ensure these are loaded securely from environment variables.
-    app.config['GOOGLE_CLIENT_ID'] ="761911316534-mqtuup6nsmqmmrnv4aqdmnos9d9r9q9t.apps.googleusercontent.com" # <--- REPLACE THIS with your actual Google Client ID
-    app.config['JWT_SECRET_KEY'] = "028f40f9a77d37807e158f6cf2cef698bae56e3d88bda1abab76d76a0f44544d"
+    app.config['JWT_SECRET_KEY'] = os.getenv("GOOGLE_CLIENT_SECRET")
+    app.config['GOOGLE_CLIENT_ID'] = os.getenv("GOOGLE_CLIENT_ID")
     # Optional: JWT expiration in seconds (defaulting to 24 hours)
     app.config['JWT_EXPIRATION_SECONDS'] = int(os.environ.get("JWT_EXPIRATION_SECONDS", 86400))
 

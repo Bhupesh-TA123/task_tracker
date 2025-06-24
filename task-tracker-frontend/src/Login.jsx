@@ -25,7 +25,7 @@ function Login() {
     // Ensure google.accounts.id is available
     if (window.google && window.google.accounts && window.google.accounts.id) {
       window.google.accounts.id.initialize({
-        client_id: "761911316534-mqtuup6nsmqmmrnv4aqdmnos9d9r9q9t.apps.googleusercontent.com", // REPLACE WITH YOUR ACTUAL GOOGLE CLIENT ID
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID, // REPLACE WITH YOUR ACTUAL GOOGLE CLIENT ID
         callback: handleGoogleCredentialResponse,
         auto_select: false, // Prevents automatic sign-in on page load
       });

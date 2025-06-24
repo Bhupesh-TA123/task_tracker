@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Login from './Login'; // Import the new Login component
 
-// No longer importing App.css as Tailwind CSS is loaded via CDN in index.html
-import './App.css';
 // Base URL for your Flask API
 const API_BASE_URL = 'http://127.0.0.1:5000';
 

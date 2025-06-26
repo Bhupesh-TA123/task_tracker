@@ -1,40 +1,30 @@
+# app/routes/user_routes.py
+
 from flask import Blueprint, request, jsonify
 from app.models.user import User
+from app.models.role import Role # Ensure Role is imported
 from app import db
-from app.routes.auth_routes import role_required # Import the decorator
+from app.routes.auth_routes import role_required
 
-bp = Blueprint('user_routes', __name__, url_prefix='/users') # Changed blueprint name for consistency
+bp = Blueprint('user_routes', __name__, url_prefix='/users')
 
+# --- Other routes like POST, PUT, DELETE remain the same ---
 @bp.route('/', methods=['POST'])
-@role_required(allowed_roles=['Admin']) # Only Admin can create users
+@role_required(allowed_roles=['Admin'])
 def create_user():
-    """
-    Creates a new user.
-    Expects JSON data with 'username', 'email', and optionally 'role_id'.
-    """
     data = request.get_json()
     try:
-        user = User(
-            username=data['username'],
-            email=data['email'],
-            role_id=data.get('role_id') # role_id is optional
-        )
+        user = User(username=data['username'], email=data['email'], role_id=data.get('role_id'))
         db.session.add(user)
         db.session.commit()
         return jsonify({'message': 'User created successfully', 'user_id': user.id}), 201
-    except KeyError as e:
-        return jsonify({'error': f"Missing required field: {e}"}), 400
     except Exception as e:
-        db.session.rollback() # Rollback in case of database error
+        db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
 @bp.route('/<int:id>', methods=['PUT'])
-@role_required(allowed_roles=['Admin']) # Only Admin can update users
+@role_required(allowed_roles=['Admin'])
 def update_user(id):
-    """
-    Updates an existing user by ID.
-    Expects JSON data with fields to update (e.g., 'username', 'email', 'role_id').
-    """
     user = User.query.get_or_404(id)
     data = request.get_json()
     try:
@@ -47,11 +37,8 @@ def update_user(id):
         return jsonify({'error': str(e)}), 400
 
 @bp.route('/<int:id>', methods=['DELETE'])
-@role_required(allowed_roles=['Admin']) # Only Admin can delete users
+@role_required(allowed_roles=['Admin'])
 def delete_user(id):
-    """
-    Deletes a user by ID.
-    """
     user = User.query.get_or_404(id)
     try:
         db.session.delete(user)
@@ -60,36 +47,44 @@ def delete_user(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
+# --- Other routes like POST, PUT, DELETE remain the same ---
 
+
+# --- REVISED list_users FUNCTION ---
 @bp.route('/', methods=['GET'])
-@role_required(allowed_roles=['Admin', 'Task Creator', 'Read Only']) # All roles can list users
+@role_required(allowed_roles=['Admin', 'Task Creator', 'Read Only'])
 def list_users():
     """
-    Retrieves a list of all users.
-    Returns a JSON array of user objects.
+    Retrieves a list of all users, correctly including their role name.
     """
     users = User.query.all()
     result = []
     for user in users:
+        # This check ensures that if a user's role is deleted, the app doesn't crash.
+        role_name = user.role.name if user.role else None
+
         result.append({
             'id': user.id,
             'username': user.username,
             'email': user.email,
-            'role_id': user.role_id
+            'role_id': user.role_id,
+            'roleName': role_name  # The crucial field for the frontend filter
         })
     return jsonify(result)
 
+# --- REVISED get_user FUNCTION ---
 @bp.route('/<int:id>', methods=['GET'])
-@role_required(allowed_roles=['Admin', 'Task Creator', 'Read Only']) # All roles can get a single user
+@role_required(allowed_roles=['Admin', 'Task Creator', 'Read Only'])
 def get_user(id):
     """
-    Retrieves a single user by ID.
-    Returns a JSON object of the user.
+    Retrieves a single user by ID, correctly including their role name.
     """
     user = User.query.get_or_404(id)
+    role_name = user.role.name if user.role else None
     return jsonify({
         'id': user.id,
         'username': user.username,
         'email': user.email,
-        'role_id': user.role_id
+        'role_id': user.role_id,
+        'roleName': role_name # Also include roleName here for consistency
     })

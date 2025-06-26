@@ -7,3 +7,4 @@ class Task(db.Model):
     status = db.Column(db.String(50))
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    

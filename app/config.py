@@ -13,5 +13,5 @@ class Config:
     JWT_EXPIRATION_SECONDS = int(os.environ.get('JWT_EXPIRATION_SECONDS', 3600 * 24)) # 24 hours default
 
     # ... your SQLAlchemy and other configs ...
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///your_database.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///task_tracker.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

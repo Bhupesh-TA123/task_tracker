@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 // --- Sub-component for the Project Edit Form ---
-// This is now a self-contained component to manage its own state.
 const EditProjectForm = ({ project, users, onSave, onCancel }) => {
-    // This component now manages the 'editedProject' state directly.
     const [editedProject, setEditedProject] = useState(project);
+    
+    // --- NEW: Filter for Admin users for the edit form as well ---
+    const adminUsers = users.filter(user => user.roleName === 'Admin');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -24,8 +25,9 @@ const EditProjectForm = ({ project, users, onSave, onCancel }) => {
                     <div className="grid grid-cols-2 gap-4 mb-2">
                         <input type="text" name="name" value={editedProject.name} onChange={handleInputChange} className="p-2 border rounded" placeholder="Name" />
                         <select name="owner_id" value={editedProject.owner_id || ''} onChange={handleInputChange} className="p-2 border rounded">
-                            <option value="">Select an Owner</option>
-                            {users.map(u => <option key={u.id} value={u.id}>{u.username}</option>)}
+                            <option value="">Select an Admin Owner</option>
+                            {/* Use the filtered adminUsers list here */}
+                            {adminUsers.map(u => <option key={u.id} value={u.id}>{u.username}</option>)}
                         </select>
                         <input type="date" name="start_date" value={editedProject.start_date || ''} onChange={handleInputChange} className="p-2 border rounded"/>
                         <input type="date" name="end_date" value={editedProject.end_date || ''} onChange={handleInputChange} className="p-2 border rounded"/>
@@ -51,9 +53,8 @@ const ProjectRow = ({ project, users, tasks, userProfile, handleUpdate, handleDe
     const findOwnerName = (ownerId) => users.find(u => u.id === ownerId)?.username || 'N/A';
     
     const handleSave = (updatedProject) => {
-        // The handleUpdate function is passed down from App.js
         handleUpdate('/projects', updatedProject.id, updatedProject, 'Project updated!');
-        setIsEditing(false); // Exit edit mode
+        setIsEditing(false);
     };
 
     if (isEditing) {
@@ -105,12 +106,13 @@ const ProjectsPage = ({ projects, tasks, users, userProfile, handleUpdate, handl
     const initialNewProjectState = { name: '', description: '', start_date: '', end_date: '', owner_id: '' };
     const [newProject, setNewProject] = useState(initialNewProjectState);
     const [showCreateForm, setShowCreateForm] = useState(false);
-    
-    // Scoped messages
     const [formMessage, setFormMessage] = useState('');
     const [formError, setFormError] = useState('');
     const [listMessage, setListMessage] = useState('');
     const [listError, setListError] = useState('');
+    
+    // --- NEW: Filter for users with the 'Admin' role ---
+    const adminUsers = users.filter(user => user.roleName === 'Admin');
     
     const handleNewProjectSubmit = (e) => {
         e.preventDefault();
@@ -118,10 +120,8 @@ const ProjectsPage = ({ projects, tasks, users, userProfile, handleUpdate, handl
         handleCreate('/projects/', projectData, 'Project created!', setNewProject, initialNewProjectState, fetchProjects, setShowCreateForm, setFormMessage, setFormError);
     };
     
-    // The handleUpdate and handleDelete now also get the local message setters
     const updateProject = (endpoint, id, data, msg) => handleUpdate(endpoint, id, data, msg, fetchProjects, setListMessage, setListError);
     const deleteProject = (endpoint, id, msg) => handleDelete(endpoint, id, msg, fetchProjects, setListMessage, setListError);
-
 
     return (
         <div className="space-y-6">
@@ -139,10 +139,13 @@ const ProjectsPage = ({ projects, tasks, users, userProfile, handleUpdate, handl
                         <h3 className="text-xl font-semibold">New Project Details</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input type="text" name="name" value={newProject.name} onChange={e => setNewProject({...newProject, name: e.target.value})} placeholder="Project Name" required className="p-2.5 border rounded-md"/>
+                            
+                            {/* --- MODIFIED: This dropdown now only shows Admin users --- */}
                             <select name="owner_id" value={newProject.owner_id} onChange={e => setNewProject({...newProject, owner_id: e.target.value})} required className="p-2.5 border rounded-md">
-                                <option value="">Select an Owner</option>
-                                {users.map(user => <option key={user.id} value={user.id}>{user.username}</option>)}
+                                <option value="">Select an Admin Owner</option>
+                                {adminUsers.map(user => <option key={user.id} value={user.id}>{user.username}</option>)}
                             </select>
+
                             <input type="date" name="start_date" value={newProject.start_date} onChange={e => setNewProject({...newProject, start_date: e.target.value})} required className="p-2.5 border rounded-md"/>
                             <input type="date" name="end_date" value={newProject.end_date} onChange={e => setNewProject({...newProject, end_date: e.target.value})} required className="p-2.5 border rounded-md"/>
                         </div>
